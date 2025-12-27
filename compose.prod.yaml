@@ -5,26 +5,25 @@ networks:
     driver: bridge
 
 services:
-  php:
-    container_name: tempfastmail_php
-    build:
-      context: .
-      target: frankenphp_prod
+  mysql:
+    container_name: tempfastmail_mysql
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: project
+      MYSQL_USER: project
+      MYSQL_PASSWORD: project
     volumes:
-      - tempfastmail_caddy_data:/data
-      - tempfastmail_caddy_config:/config
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.tempfastmailweb.rule=Host(`tempfastmail.com`)"
-      - "traefik.http.routers.tempfastmailweb.entrypoints=web"
-      - "traefik.docker.network=traefik"
+      - volume_database_tempfastmail:/var/lib/mysql
     networks:
-      - traefik
       - tempfastmail
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: tempfastmail_phpmyadmin
+    restart: always
     links:
       - mysql
     environment:
@@ -41,19 +40,22 @@ services:
       - traefik
       - tempfastmail
 
-  mysql:
-    container_name: tempfastmail_mysql
-    image: mysql:8.0
+  php:
+    container_name: tempfastmail_php
+    build:
+      context: .
+      target: frankenphp_prod
     restart: always
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-      MYSQL_ROOT_PASSWORD:
-      MYSQL_DATABASE: project
-      MYSQL_USER: project
-      MYSQL_PASSWORD: project
     volumes:
-      - volume_database_tempfastmail:/var/lib/mysql
+      - tempfastmail_caddy_data:/data
+      - tempfastmail_caddy_config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tempfastmailweb.rule=Host(`tempfastmail.com`)"
+      - "traefik.http.routers.tempfastmailweb.entrypoints=web"
+      - "traefik.docker.network=traefik"
     networks:
+      - traefik
       - tempfastmail
 
 volumes:

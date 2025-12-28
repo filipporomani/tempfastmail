@@ -34,6 +34,7 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		else
 			echo 'The database is now ready and reachable, running migrations ...'
 			php bin/console doctrine:schema:update --force
+			php bin/console app:make-user admin@admin.dev admin ROLE_ADMIN
 			echo 'Migrations ran successfully!'
 		fi
 	fi

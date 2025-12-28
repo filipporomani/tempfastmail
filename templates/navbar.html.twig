@@ -1,7 +1,7 @@
 <nav class="navbar is-white" role="navigation" aria-label="main navigation">
     <div class="container">
         <div class="navbar-brand">
-            <a class="navbar-item has-text-weight-bold is-size-5" href="/">TEMP FAST MAIL SENDER</a>
+            <a class="navbar-item has-text-weight-bold is-size-5" href="/">Temporary Fast Mail</a>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
@@ -12,9 +12,8 @@
 
         <div id="mainNavbar" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item is-active" href="/">Pagrindinis</a>
-                <a class="navbar-item" href="/naujienos">Naujienos</a>
-                <a class="navbar-item" href="/kontaktai">Kontaktai</a>
+                <a class="navbar-item is-active" href="/">Home</a>
+                <a class="navbar-item" href="/blog">Blog</a>
             </div>
             {% if app.user %}
 
@@ -26,11 +25,11 @@
                                     <strong>Admin</strong>
                                 </a>
                             {% endif %}
-                            <a class="button is-primary is-light" href="/paskyra">
-                                <strong>Paskyra</strong>
+                            <a class="button is-primary is-light" href="/account">
+                                <strong>Account</strong>
                             </a>
                             <a class="button is-danger is-light" href="{{ path('app_logout') }}">
-                                <strong>Atsijungti</strong>
+                                <strong>Logout</strong>
                             </a>
                         </div>
                     </div>
@@ -39,8 +38,8 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary is-light" href="/prisijungti">
-                                <strong>Prisijungti</strong>
+                            <a class="button is-primary is-light" href="/login">
+                                <strong>Login</strong>
                             </a>
                         </div>
                     </div>

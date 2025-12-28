@@ -23,6 +23,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: tempfastmail_phpmyadmin
+    restart: unless-stopped
     links:
       - mysql
     environment:
@@ -36,7 +37,7 @@ services:
   mysql:
     container_name: tempfastmail_mysql
     image: mysql:8.0
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_ROOT_PASSWORD:

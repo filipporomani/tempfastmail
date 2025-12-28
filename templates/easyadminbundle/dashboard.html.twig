@@ -1,0 +1,10 @@
+{% extends "@EasyAdmin/page/content.html.twig" %}
+
+{% block page_content %}
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+    TODO: Dashboard
+{% endblock page_content %}

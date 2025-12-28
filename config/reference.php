@@ -146,7 +146,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         cookie_name?: scalar|null, // The name of the cookie to use when using stateless protection. // Default: "csrf-token"
  *     },
  *     form?: bool|array{ // Form configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         csrf_protection?: array{
  *             enabled?: scalar|null, // Default: null
  *             token_id?: scalar|null, // Default: null
@@ -300,7 +300,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         },
  *     },
  *     translator?: bool|array{ // Translator configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         fallbacks?: list<scalar|null>,
  *         logging?: bool, // Default: false
  *         formatter?: scalar|null, // Default: "translator.formatter.default"
@@ -328,7 +328,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         }>,
  *     },
  *     validation?: bool|array{ // Validation configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         cache?: scalar|null, // Deprecated: Setting the "framework.validation.cache.cache" configuration option is deprecated. It will be removed in version 8.0.
  *         enable_attributes?: bool, // Default: true
  *         static_method?: list<scalar|null>,
@@ -643,7 +643,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         }>,
  *     },
  *     uid?: bool|array{ // Uid configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         default_uuid_version?: 7|6|4|1, // Default: 7
  *         name_based_uuid_version?: 5|3, // Default: 5
  *         name_based_uuid_namespace?: scalar|null,
@@ -1308,6 +1308,62 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     intercept_redirects?: bool, // Default: false
  *     excluded_ajax_paths?: scalar|null, // Default: "^/((index|app(_[\\w]+)?)\\.php/)?_wdt"
  * }
+ * @psalm-type TwigExtraConfig = array{
+ *     cache?: bool|array{
+ *         enabled?: bool, // Default: false
+ *     },
+ *     html?: bool|array{
+ *         enabled?: bool, // Default: true
+ *     },
+ *     markdown?: bool|array{
+ *         enabled?: bool, // Default: false
+ *     },
+ *     intl?: bool|array{
+ *         enabled?: bool, // Default: false
+ *     },
+ *     cssinliner?: bool|array{
+ *         enabled?: bool, // Default: false
+ *     },
+ *     inky?: bool|array{
+ *         enabled?: bool, // Default: false
+ *     },
+ *     string?: bool|array{
+ *         enabled?: bool, // Default: false
+ *     },
+ *     commonmark?: array{
+ *         renderer?: array{ // Array of options for rendering HTML.
+ *             block_separator?: scalar|null,
+ *             inner_separator?: scalar|null,
+ *             soft_break?: scalar|null,
+ *         },
+ *         html_input?: "strip"|"allow"|"escape", // How to handle HTML input.
+ *         allow_unsafe_links?: bool, // Remove risky link and image URLs by setting this to false. // Default: true
+ *         max_nesting_level?: int, // The maximum nesting level for blocks. // Default: 9223372036854775807
+ *         max_delimiters_per_line?: int, // The maximum number of strong/emphasis delimiters per line. // Default: 9223372036854775807
+ *         slug_normalizer?: array{ // Array of options for configuring how URL-safe slugs are created.
+ *             instance?: mixed,
+ *             max_length?: int, // Default: 255
+ *             unique?: mixed,
+ *         },
+ *         commonmark?: array{ // Array of options for configuring the CommonMark core extension.
+ *             enable_em?: bool, // Default: true
+ *             enable_strong?: bool, // Default: true
+ *             use_asterisk?: bool, // Default: true
+ *             use_underscore?: bool, // Default: true
+ *             unordered_list_markers?: list<scalar|null>,
+ *         },
+ *         ...<mixed>
+ *     },
+ * }
+ * @psalm-type TwigComponentConfig = array{
+ *     defaults?: array<string, string|array{ // Default: ["__deprecated__use_old_naming_behavior"]
+ *         template_directory?: scalar|null, // Default: "components"
+ *         name_prefix?: scalar|null, // Default: ""
+ *     }>,
+ *     anonymous_template_directory?: scalar|null, // Defaults to `components`
+ *     profiler?: bool, // Enables the profiler for Twig Component (in debug mode) // Default: "%kernel.debug%"
+ *     controllers_json?: scalar|null, // Deprecated: The "twig_component.controllers_json" config option is deprecated, and will be removed in 3.0. // Default: null
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1318,6 +1374,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     doctrine_migrations?: DoctrineMigrationsConfig,
  *     security?: SecurityConfig,
  *     webpack_encore?: WebpackEncoreConfig,
+ *     twig_extra?: TwigExtraConfig,
+ *     twig_component?: TwigComponentConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1330,6 +1388,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         security?: SecurityConfig,
  *         webpack_encore?: WebpackEncoreConfig,
  *         web_profiler?: WebProfilerConfig,
+ *         twig_extra?: TwigExtraConfig,
+ *         twig_component?: TwigComponentConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1341,6 +1401,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         doctrine_migrations?: DoctrineMigrationsConfig,
  *         security?: SecurityConfig,
  *         webpack_encore?: WebpackEncoreConfig,
+ *         twig_extra?: TwigExtraConfig,
+ *         twig_component?: TwigComponentConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1353,6 +1415,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         security?: SecurityConfig,
  *         webpack_encore?: WebpackEncoreConfig,
  *         web_profiler?: WebProfilerConfig,
+ *         twig_extra?: TwigExtraConfig,
+ *         twig_component?: TwigComponentConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

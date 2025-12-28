@@ -119,6 +119,11 @@ class ReceivedEmail
         return $this->toMultiple;
     }
 
+    public function getToMultipleString(): string
+    {
+        return json_encode($this->toMultiple);
+    }
+
     public function setToMultiple(array $toMultiple): static
     {
         $this->toMultiple = $toMultiple;
@@ -143,6 +148,11 @@ class ReceivedEmail
         return $this->metadata;
     }
 
+    public function getMetadataString(): string
+    {
+        return json_encode($this->metadata);
+    }
+
     public function setMetadata(array $metadata): static
     {
         $this->metadata = $metadata;
@@ -165,6 +175,11 @@ class ReceivedEmail
     public function getBccMultiple(): array
     {
         return $this->bccMultiple;
+    }
+
+    public function getBccMultipleString(): string
+    {
+        return json_encode($this->bccMultiple);
     }
 
     public function setBccMultiple(array $bccMultiple): static

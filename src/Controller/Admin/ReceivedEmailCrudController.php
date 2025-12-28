@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ReceivedEmail;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -25,11 +27,19 @@ class ReceivedEmailCrudController extends AbstractCrudController
             TextField::new('subject'),
             TextField::new('fromName'),
             TextField::new('fromAddress'),
-            ArrayField::new('toMultiple'),
-            ArrayField::new('bccMultiple'),
-            TextField::new('html'),
-            ArrayField::new('metadata'),
+            TextField::new('toMultipleString'),
+            TextField::new('bccMultipleString'),
+            TextField::new('html')->hideOnIndex(),
             DateTimeField::new('createdAt'),
+            TextField::new('metadataString')->hideOnIndex(),
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::NEW, Action::EDIT)
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+        ;
     }
 }

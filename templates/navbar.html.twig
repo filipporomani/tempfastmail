@@ -2,7 +2,7 @@
     <div class="container">
         <div class="navbar-brand">
             <a class="navbar-item has-text-weight-bold is-size-5" href="/">Temporary Fast Mail</a>
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
+            <a role="button" class="navbar-burger has-text-primary" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
@@ -19,14 +19,14 @@
                     <div class="navbar-item">
                         <div class="buttons">
                             {% if is_granted('ROLE_ADMIN') %}
-                                <a class="button is-warning is-light" href="/admin">
+                                <a class="button is-danger is-light" href="/admin">
                                     <strong>Admin</strong>
                                 </a>
                             {% endif %}
                             <a class="button is-primary is-light" href="/account">
                                 <strong>Account</strong>
                             </a>
-                            <a class="button is-danger is-light" href="{{ path('app_logout') }}">
+                            <a class="button is-primary is-light" href="{{ path('app_logout') }}">
                                 <strong>Logout</strong>
                             </a>
                         </div>

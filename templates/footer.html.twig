@@ -1,29 +1,29 @@
-<footer class="footer is-dark">
+<footer class="footer has-background-dark">
     <div class="container">
         <div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center
                 is-flex-direction-row-tablet is-justify-content-space-between-tablet">
 
-            <div class="has-text-weight-bold mb-3 mb-0-tablet">
+            <div class="has-text-weight-bold has-text-white mb-3 mb-0-tablet">
                 Temporary Fast Mail
             </div>
 
-            <nav aria-label="Apačia" class="mb-3 mb-0-tablet">
+            <nav aria-label="Footer Navigation" class="mb-3 mb-0-tablet">
                 <ul class="is-flex is-flex-wrap-wrap is-justify-content-center is-align-items-center
                    is-justify-content-flex-start-tablet">
-                    <li class="mx-2"><a href="/">Home</a></li>
-                    <li class="is-hidden-mobile">•</li>
-                    <li class="mx-2"><a href="/blog">Blog</a></li>
-                    <li class="is-hidden-mobile">•</li>
-                    <li class="mx-2"><a href="/contact">Contact</a></li>
+                    <li class="mx-2"><a class="has-text-white" href="/">Home</a></li>
+                    <li class="is-hidden-mobile has-text-white">•</li>
+                    <li class="mx-2"><a class="has-text-white" href="/blog">Blog</a></li>
+                    <li class="is-hidden-mobile has-text-white">•</li>
+                    <li class="mx-2"><a class="has-text-white" href="/contact">Contact</a></li>
                     {% if app.user %}
-                        <li class="is-hidden-mobile">•</li>
-                        <li class="mx-2"><a href="/account">Account</a></li>
+                        <li class="is-hidden-mobile has-text-white">•</li>
+                        <li class="mx-2"><a class="has-text-white" href="/account">Account</a></li>
                     {% endif %}
                 </ul>
             </nav>
 
             <div class="has-text-centered has-text-right-tablet">
-                <small>{{ 'now'|date('Y') }} © Temporary Fast Mail. All Rights Reserved.</small>
+                <small class="has-text-white">{{ 'now'|date('Y') }} © Temporary Fast Mail. All Rights Reserved.</small>
             </div>
         </div>
     </div>

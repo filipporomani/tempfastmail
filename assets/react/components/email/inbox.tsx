@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ReceivedEmailResponseListDto, TemporaryEmailBox} from "../../types/types";
+import {ReceivedEmailResponseDto, ReceivedEmailResponseListDto, TemporaryEmailBox} from "../../types/types";
 import axios from "axios";
 import {useInterval} from "react-use";
 
@@ -9,6 +9,7 @@ interface Props {
 
 const Inbox = ({temporaryEmailBox}: Props) => {
   const [receivedEmails, setReceivedEmails] = useState<ReceivedEmailResponseListDto[]>([]);
+  const [selectedEmail, setSelectedEmail] = useState<ReceivedEmailResponseDto | null>(null);
 
   const fetchEmails = () => {
     if (temporaryEmailBox === null) {
@@ -20,18 +21,14 @@ const Inbox = ({temporaryEmailBox}: Props) => {
         const emails = r.data as ReceivedEmailResponseListDto[];
 
         setReceivedEmails(emails);
-
-        // setReceivedEmails([
-        //   {
-        //     uuid: "b3863e71-4121-4d86-8693-a9d9315ab12f",
-        //     real_from: "qweqwe@qwe.com",
-        //     real_to: "qweqwe@qwe.com",
-        //     from_name: "Valentinas",
-        //     subject: "CONFIRMATION CODE- BLA BLA BLA",
-        //     received_at: new Date(),
-        //   },
-        // ]);
       });
+  }
+
+  const handleSelectEmail = (email: ReceivedEmailResponseListDto) => {
+    axios.get('/api/email-box/' + temporaryEmailBox.uuid + '/email/' + email.uuid)
+      .then(r => {
+        setSelectedEmail(r.data)
+      })
   }
 
   // Fetch emails every 5 seconds
@@ -63,7 +60,7 @@ const Inbox = ({temporaryEmailBox}: Props) => {
                 </div>
               </div>
 
-              {receivedEmails.length === 0 && (
+              {selectedEmail === null && receivedEmails.length === 0 && (
                 <div className="has-text-centered p-6">
                 <span className="icon is-large">
                   <i className="fas fa-sync-alt fa-spin fa-3x has-text-grey-light"></i>
@@ -75,12 +72,13 @@ const Inbox = ({temporaryEmailBox}: Props) => {
                 </div>
               )}
 
-              {receivedEmails.map(email => {
+              {selectedEmail === null && receivedEmails.map(email => {
                 return (
                   <div
                     key={email.uuid}
                     className="columns is-mobile m-0 py-3 px-4 is-vcentered is-clickable"
                     style={{ borderBottom: "1px solid #eee" }}
+                    onClick={() => handleSelectEmail(email)}
                   >
 
                     {/* Left block: Sender + email + subject (mobile stacked, desktop columns) */}
@@ -110,6 +108,60 @@ const Inbox = ({temporaryEmailBox}: Props) => {
                   </div>
                 );
               })}
+
+              {selectedEmail && (
+                <div className="box" style={{ maxWidth: "800px", margin: "20px auto" }}>
+
+                  {/* Back Button */}
+                  <button
+                    className="button is-link is-light mb-4"
+                    onClick={() => setSelectedEmail(null)}
+                  >
+                    ← Back
+                  </button>
+
+                  {/* Header: From */}
+                  <div className="columns is-vcentered mb-3">
+                    <div className="column">
+                      {selectedEmail.from_name && (
+                        <p className="has-text-weight-semibold">
+                          Sender name: {selectedEmail.from_name}
+                        </p>
+                      )}
+                      <p className="is-size-7 has-text-grey">
+                        Sender email: {selectedEmail.real_from}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Subject */}
+                  <div className="mb-3">
+                    <p className="is-size-5 has-text-weight-bold">
+                      {selectedEmail.subject}
+                    </p>
+                  </div>
+
+                  {/* Date / Metadata */}
+                  {selectedEmail.received_at && (
+                    <div className="mb-3 has-text-grey is-size-7">
+                      <span>
+                        Date: {new Date(selectedEmail.received_at).toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Email body */}
+                  <div className="content" style={{ whiteSpace: "pre-wrap" }}>
+                    <div
+                      className="content"
+                      dangerouslySetInnerHTML={{
+                        __html: selectedEmail.html,
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ namespace App\DTO\Response;
 
 use App\Entity\ReceivedEmail;
 
-class ReceivedEmailResponseDto
+class ReceivedEmailResponseListDto
 {
     public function __construct(
         public string $uuid,
@@ -12,7 +12,6 @@ class ReceivedEmailResponseDto
         public string $real_to,
         public ?string $from_name,
         public string $subject,
-        public ?string $html,
         public \DateTimeImmutable $receivedAt,
     ) {
     }
@@ -25,7 +24,6 @@ class ReceivedEmailResponseDto
             real_to: $email->getRealTo(),
             from_name: $email->getFromName(),
             subject: $email->getSubject() ?? '(no subject)',
-            html: $email->getHtml(),
             receivedAt: $email->getCreatedAt() ?? new \DateTimeImmutable(),
         );
     }

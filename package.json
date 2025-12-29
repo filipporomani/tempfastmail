@@ -27,6 +27,6 @@
         "@fortawesome/fontawesome-free": "^7.1.0",
         "axios": "^1.13.2",
         "bulma": "^1.0.4",
-        "copy-to-clipboard": "^3.3.3"
+        "react-use": "^17.6.0"
     }
 }

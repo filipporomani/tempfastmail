@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ReceivedEmailResponseListDto, TemporaryEmailBox} from "../../types/types";
 import axios from "axios";
+import {useInterval} from "react-use";
 
 interface Props {
   temporaryEmailBox: TemporaryEmailBox | null;
@@ -9,7 +10,7 @@ interface Props {
 const Inbox = ({temporaryEmailBox}: Props) => {
   const [receivedEmails, setReceivedEmails] = useState<ReceivedEmailResponseListDto[]>([]);
 
-  useEffect(() => {
+  const fetchEmails = () => {
     if (temporaryEmailBox === null) {
       return;
     }
@@ -18,19 +19,26 @@ const Inbox = ({temporaryEmailBox}: Props) => {
       .then(r => {
         const emails = r.data as ReceivedEmailResponseListDto[];
 
-        // setReceivedEmails(emails);
+        setReceivedEmails(emails);
 
-        setReceivedEmails([
-          {
-            uuid: "b3863e71-4121-4d86-8693-a9d9315ab12f",
-            real_from: "qweqwe@qwe.com",
-            real_to: "qweqwe@qwe.com",
-            from_name: "Valentinas",
-            subject: "CONFIRMATION CODE- BLA BLA BLA",
-            received_at: new Date(),
-          },
-        ]);
+        // setReceivedEmails([
+        //   {
+        //     uuid: "b3863e71-4121-4d86-8693-a9d9315ab12f",
+        //     real_from: "qweqwe@qwe.com",
+        //     real_to: "qweqwe@qwe.com",
+        //     from_name: "Valentinas",
+        //     subject: "CONFIRMATION CODE- BLA BLA BLA",
+        //     received_at: new Date(),
+        //   },
+        // ]);
       });
+  }
+
+  // Fetch emails every 5 seconds
+  useInterval(fetchEmails, 5000);
+
+  useEffect(() => {
+    fetchEmails();
   }, [temporaryEmailBox])
 
   return (
@@ -42,9 +50,17 @@ const Inbox = ({temporaryEmailBox}: Props) => {
 
               {/* Header */}
               <div className="columns is-mobile m-0 has-background-dark py-3 px-4">
-                <div className="column has-text-white has-text-weight-semibold">SENDER</div>
-                <div className="column has-text-white has-text-weight-semibold">SUBJECT</div>
-                <div className="column has-text-white has-text-weight-semibold has-text-right">VIEW</div>
+                <div className="column">
+                  <p className="has-text-white has-text-weight-semibold">SENDER</p>
+                </div>
+
+                <div className="column is-hidden-mobile">
+                  <p className="has-text-white has-text-weight-semibold">SUBJECT</p>
+                </div>
+
+                <div className="column is-narrow has-text-right">
+                  <p className="has-text-white has-text-weight-semibold">VIEW</p>
+                </div>
               </div>
 
               {receivedEmails.length === 0 && (

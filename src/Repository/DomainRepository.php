@@ -32,6 +32,11 @@ class DomainRepository extends ServiceEntityRepository
     {
         $now = new \DateTimeImmutable();
         $count = $this->countOfActiveDomains();
+
+        if ($count === 0) {
+            return null;
+        }
+
         $randomOffset = rand(0, $count - 1);
 
         return $this->createQueryBuilder('d')

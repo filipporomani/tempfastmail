@@ -25,3 +25,8 @@ export interface ReceivedEmailResponseDto {
 export interface ValidateEmailBoxResponseDto {
   is_valid: boolean;
 }
+
+export interface ErrorResponseDto {
+  code: number;
+  error: string;
+}

@@ -3,8 +3,8 @@
 namespace App\Service\Handler;
 
 use App\Entity\TemporaryEmailBox;
+use App\Exception\Domain\ThereAreNoDomainsException;
 use App\Repository\DomainRepository;
-use App\Repository\TemporaryEmailBoxRepository;
 use App\Service\Factory\TemporaryEmailBoxFactory;
 use App\Service\TemporaryEmailBox\TemporaryEmailBoxGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +22,11 @@ class CreateEmailBoxHandler
     public function create(string $creatorIp): TemporaryEmailBox
     {
         $domain = $this->domainRepository->findOneActiveRandomDomain();
+
+        if ($domain === null) {
+            throw new ThereAreNoDomainsException();
+        }
+
         $emailAddress = $this->temporaryEmailBoxGenerator->generateUniqueEmailAddress($domain->getDomain());
 
         $emailBox = $this->emailBoxFactory->create($emailAddress, $creatorIp);

@@ -6,8 +6,6 @@ services:
       target: frankenphp_dev
     restart: unless-stopped
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
       - ./frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro
       - ./frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
       - ./:/app
@@ -48,6 +46,4 @@ services:
       - volume_database_tempfastmail:/var/lib/mysql
 
 volumes:
-  caddy_data:
-  caddy_config:
   volume_database_tempfastmail:

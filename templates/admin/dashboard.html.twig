@@ -6,7 +6,35 @@
             {{ message }}
         </div>
     {% endfor %}
-    TODO: Dashboard
-    1. Add some statistics last day, last week, last month, last year.
-    2. Maybe check domain TXT records to make sure its cloudflare?
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Dashboard Statistics</h1>
+
+            {% if activeDomainsCount == 0 %}
+                <div class="alert alert-danger" role="alert">
+                    ⚠️ No active domains found! Please add a domain in "Domains" section on the left menu.
+                </div>
+            {% endif %}
+
+
+            <table class="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Active domains</td>
+                    <td>{{ activeDomainsCount }}</td>
+                </tr>
+                <tr>
+                    <td>Received Total Emails</td>
+                    <td>{{ receivedEmailsCount }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock page_content %}

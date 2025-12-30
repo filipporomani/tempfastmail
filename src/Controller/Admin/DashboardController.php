@@ -6,6 +6,8 @@ use App\Entity\Domain;
 use App\Entity\ReceivedEmail;
 use App\Entity\TemporaryEmailBox;
 use App\Entity\User;
+use App\Repository\DomainRepository;
+use App\Repository\ReceivedEmailRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -17,9 +19,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private DomainRepository $domainRepository,
+        private ReceivedEmailRepository $receivedEmailRepository,
+    ) {
+    }
+
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        return $this->render('admin/dashboard.html.twig', [
+            'activeDomainsCount' => $this->domainRepository->countOfActiveDomains(),
+            'receivedEmailsCount' => $this->receivedEmailRepository->count(),
+        ]);
     }
 
     public function configureDashboard(): Dashboard

@@ -39,6 +39,8 @@ if [ "$1" = 'frankenphp' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		fi
 	fi
 
+	composer run-script --no-dev post-install-cmd
+
 	echo 'PHP app ready!'
 fi
 

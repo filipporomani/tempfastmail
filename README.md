@@ -1,10 +1,10 @@
 # Self Hosted Temporary Fast Email Box
 
-First self-hosted temporary fast email box which receives emails and displays them.
+The first self-hosted, disposable fast email inbox that receives and displays messages.
 
-![Temp Fast Mail frontpage photo](https://github.com/kasteckis/temp-fast-mail/blob/master/image.png?raw=true)
+![Temp Fast Mail frontpage photo](https://github.com/kasteckis/tempfastmail/blob/master/docs/readme.png?raw=true)
 
-<b>You can checkout working DEMO: [TempFastMail.com](https://tempfastmail.com)</b>
+<b>You can check out working DEMO: [TempFastMail.com](https://tempfastmail.com)</b>
 
 
 ## How to set up with Docker Compose?
@@ -14,8 +14,8 @@ First self-hosted temporary fast email box which receives emails and displays th
 ```
 services:
   tempfastmail:
-    container_name: kasteckis_tempfastmail
-    image: kasteckis/temp-fast-mail:latest
+    container_name: tempfastmail
+    image: kasteckis/tempfastmail:latest
     environment:
       CREATE_RECEIVED_EMAIL_API_AUTHORIZATION_KEY: change-this-to-a-random-value # TODO: Create random value here!
       DEFAULT_URI: https://yourdomain.com # TODO: Change to your domain!
@@ -25,11 +25,15 @@ services:
       - ./sqlite:/app/sqlite
 ```
 
-2. Set up CloudFlare Email Worker (<b>It's free</b>) which would publish received emails to your instance. [You can follow instructions here](https://github.com/kasteckis/temp-fast-mail/blob/master/docs/CLOUDFLARE_EMAIL_WORKER_SETUP.md).
+2. Set up CloudFlare Email Worker (<b>It's free</b>) which would publish received emails to your instance. [You can follow instructions here](https://github.com/kasteckis/tempfastmail/blob/master/docs/CLOUDFLARE_EMAIL_WORKER_SETUP.md).
 3. Visit your website and start receiving emails!
 
 ## How we create production image?
 ```
-$ docker build --target frankenphp_prod -t kasteckis/temp-fast-mail:latest .
-$ docker push kasteckis/temp-fast-mail:latest
+$ docker build --target frankenphp_prod -t kasteckis/tempfastmail:latest .
+$ docker push kasteckis/tempfastmail:latest
 ```
+
+## Any issues or questions?
+
+Feel free to open an issue on GitHub - [here](https://github.com/kasteckis/TempFastMail/issues)

@@ -9,7 +9,7 @@ The first self-hosted, disposable fast email inbox that receives and displays me
 
 ## How to set up with Docker Compose?
 
-1. Create docker-compose.yml file with following content. Also adjust environment variables as needed.
+1. Create `docker-compose.yml` file with following content. Also adjust environment variables as needed.
 
 ```
 services:
@@ -26,7 +26,7 @@ services:
 ```
 
 2. Set up CloudFlare Email Worker (<b>It's free</b>) which would publish received emails to your instance. [You can follow instructions here](https://github.com/kasteckis/tempfastmail/blob/master/docs/CLOUDFLARE_EMAIL_WORKER_SETUP.md).
-3. Visit your website and start receiving emails!
+3. Visit your website and start receiving emails! With email `admin@admin.dev` and password `admin`!
 
 ## How we create production image?
 ```

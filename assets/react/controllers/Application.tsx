@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Inbox from "../components/email/inbox";
 import Generator from "../components/email/generator";
 import axios from "axios";
-import {TemporaryEmailBox} from "../types/types";
+import {TemporaryEmailBox, ValidateEmailBoxResponseDto} from "../types/types";
 
 const Application = () => {
   const [temporaryEmailBox, setTemporaryEmailBox] = useState<TemporaryEmailBox|null>(null);
@@ -28,12 +28,23 @@ const Application = () => {
       }
 
       if (savedEmail && savedUuid) {
-        // TODO: Maybe would be smart to validate if this email+uuid still exists server-side? If not, we can just regenerate.
-
-        setTemporaryEmailBox({
+        axios.post('/api/email-box/validate', {
           email: savedEmail,
           uuid: savedUuid
-        });
+        }).then((r) => {
+          const validationResponse = r.data as ValidateEmailBoxResponseDto;
+
+          if (validationResponse.is_valid) {
+            console.log('valid');
+            setTemporaryEmailBox({
+              email: savedEmail,
+              uuid: savedUuid
+            });
+          } else {
+            console.log('not valid');
+            handleRegenerateEmail();
+          }
+        })
       }
     }
   }, [])

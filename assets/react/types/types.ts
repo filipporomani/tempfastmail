@@ -21,3 +21,7 @@ export interface ReceivedEmailResponseDto {
   html: string | null;
   received_at: Date;
 }
+
+export interface ValidateEmailBoxResponseDto {
+  is_valid: boolean;
+}

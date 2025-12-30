@@ -2,21 +2,28 @@
 
 namespace App\Controller;
 
+use App\DTO\Request\CreateEmailRequestDto;
+use App\DTO\Request\ValidateEmailBoxRequestDto;
 use App\DTO\Response\CreateEmailBoxResponseDto;
 use App\DTO\Response\ReceivedEmailResponseDto;
 use App\DTO\Response\ReceivedEmailResponseListDto;
+use App\DTO\Response\ValidateEmailBoxResponseDto;
+use App\Entity\TemporaryEmailBox;
+use App\Repository\TemporaryEmailBoxRepository;
 use App\Service\Client\ClientIpRetriever;
 use App\Service\Handler\CreateEmailBoxHandler;
 use App\Service\ReceivedEmail\ReceivedEmailsFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Uid\Uuid;
 
 final class EmailBoxController extends AbstractController
 {
     public function __construct(
+        private TemporaryEmailBoxRepository $temporaryEmailBoxRepository,
         private CreateEmailBoxHandler $createEmailBoxHandler,
         private ReceivedEmailsFetcher $receivedEmailsFetcher,
         private ClientIpRetriever $clientIpRetriever,
@@ -31,6 +38,21 @@ final class EmailBoxController extends AbstractController
         $emailBox = $this->createEmailBoxHandler->create($creatorIp);
 
         return $this->json(CreateEmailBoxResponseDto::fromEntity($emailBox));
+    }
+
+    #[Route('/api/email-box/validate', name: 'api_email_box_validate', methods: ['POST'])]
+    public function validateEmailBox(
+        #[MapRequestPayload] ValidateEmailBoxRequestDto $validateEmailBoxRequestDto,
+    ): Response
+    {
+        $emailBox = $this->temporaryEmailBoxRepository->findOneBy([
+            'uuid' => $validateEmailBoxRequestDto->uuid,
+            'email' => $validateEmailBoxRequestDto->email,
+        ]);
+
+        return $this->json(new ValidateEmailBoxResponseDto(
+            is_valid: $emailBox instanceof TemporaryEmailBox,
+        ));
     }
 
     #[Route('/api/email-box/{emailBoxUuid}/emails', name: 'api_get_email_box_messages', methods: ['GET'])]

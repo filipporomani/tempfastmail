@@ -19,6 +19,9 @@ VOLUME /app/var/
 # hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	file \
+    cron \
+    supervisor \
+    procps \
 	git \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -45,6 +48,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && apt-get install
 COPY --link frankenphp/conf.d/10-app.ini $PHP_INI_DIR/app.conf.d/
 COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --link frankenphp/Caddyfile /etc/frankenphp/Caddyfile
+COPY --link frankenphp/crontab /etc/frankenphp/crontab
+
+RUN crontab -u root /etc/frankenphp/crontab
 
 ENTRYPOINT ["docker-entrypoint"]
 
@@ -66,8 +72,9 @@ RUN set -eux; \
 	;
 
 COPY --link frankenphp/conf.d/20-app.dev.ini $PHP_INI_DIR/app.conf.d/
+COPY --link frankenphp/supervisord_dev.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD [ "frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile", "--watch" ]
+CMD ["/usr/bin/supervisord"]
 
 # Prod FrankenPHP image
 FROM frankenphp_base AS frankenphp_prod
@@ -85,6 +92,7 @@ RUN set -eux; \
 
 # copy sources
 COPY --link --exclude=frankenphp/ . ./
+COPY --link frankenphp/supervisord_prod.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN set -eux
 RUN mkdir -p var/cache var/log var/share
@@ -93,3 +101,5 @@ RUN composer dump-env prod
 #RUN composer run-script --no-dev post-install-cmd
 RUN chmod +x bin/console
 RUN sync
+
+CMD ["/usr/bin/supervisord"]
